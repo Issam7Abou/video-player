@@ -1,3 +1,4 @@
+const player = document.querySelector('.player');
 const video = document.querySelector('video');
 const progressRange = document.querySelector('.progress-range');
 const progressBar = document.querySelector('.progress-bar');
@@ -7,7 +8,8 @@ const volumeRange = document.querySelector('.volume-range');
 const volumeBar = document.querySelector('.volume-bar');
 const currentTime = document.querySelector('.time-elapsed');
 const duration = document.querySelector('.time-duration');
-const fullscreenBtn = document.querySelector('.fullscrean'); 
+const speed = document.querySelector('.player-speed');
+const fullscreenBtn = document.querySelector('.fullscreen'); 
 
 
 // Play & Pause ----------------------------------- //
@@ -95,24 +97,54 @@ function toggleMute() {
     } else {
         video.volume = lastVolume;
         volumeBar.style.width = `${lastVolume * 100}%`;
-        if (lastVolume > 0.7) {
-            volumeIcon.classList.add('fas', 'fa-volume-up');
-        } else if (lastVolume < 0.7 && lastVolume > 0) {
-            volumeIcon.classList.add('fas', 'fa-volume-down');
-        } 
-        //volumeIcon.classList.add('fas', 'fa-volume-up');
+        volumeIcon.classList.add('fas', 'fa-volume-up');
         volumeIcon.setAttribute('title', 'Mute');
     }
 }
 
 
 // Change Playback Speed -------------------- //
-
-
+function changeSpeed() {
+    video.playbackRate = speed.value;
+}
 
 // Fullscreen ------------------------------- //
 
+/* View in fullscreen */
+function openFullscreen(elem) {
+   if (elem.requestFullscreen) {
+     elem.requestFullscreen();
+   } else if (elem.webkitRequestFullscreen) { /* Safari */
+     elem.webkitRequestFullscreen();
+   } else if (elem.msRequestFullscreen) { /* IE11 */
+     elem.msRequestFullscreen();
+   }
+   video.classList.add('video-fullscreen');
+ }
+  
+/* Close fullscreen */
+function closeFullscreen() {
+   if (document.exitFullscreen) {
+     document.exitFullscreen();
+   } else if (document.webkitExitFullscreen) { /* Safari */
+     document.webkitExitFullscreen();
+   } else if (document.msExitFullscreen) { /* IE11 */
+     document.msExitFullscreen();
+   }
+   video.classList.remove('video-fullscreen');
+}
 
+let fullscreen = false;
+
+// Toggle fullscreen
+function toggleFullScreen() {
+    if (!fullscreen) {
+        openFullscreen(player);
+    } else {
+        closeFullscreen();
+    }
+    fullscreen = !fullscreen;
+}
 
 // Event listeners
 playBtn.addEventListener('click', togglePlay);
@@ -122,3 +154,5 @@ video.addEventListener('canplay', updateProgress);
 progressRange.addEventListener('click', setProgress);
 volumeRange.addEventListener('click', changeVolume);
 volumeIcon.addEventListener('click', toggleMute);
+speed.addEventListener('click', changeSpeed);
+fullscreenBtn.addEventListener('click', toggleFullScreen);
