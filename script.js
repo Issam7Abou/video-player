@@ -94,12 +94,17 @@ function toggleMute() {
         volumeBar.style.width = 0;
         volumeIcon.classList.add('fas', 'fa-volume-mute');
         volumeIcon.setAttribute('title', 'Unmute');
-    } else {
+    } else if (lastVolume > 0.7) {
         video.volume = lastVolume;
         volumeBar.style.width = `${lastVolume * 100}%`;
         volumeIcon.classList.add('fas', 'fa-volume-up');
         volumeIcon.setAttribute('title', 'Mute');
-    }
+    } else if (lastVolume < 0.7 && lastVolume > 0) {
+        video.volume = lastVolume;
+        volumeBar.style.width = `${lastVolume * 100}%`;
+        volumeIcon.classList.add('fas', 'fa-volume-down');
+        volumeIcon.setAttribute('title', 'Mute');
+    } 
 }
 
 
